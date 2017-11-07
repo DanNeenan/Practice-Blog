@@ -18,8 +18,11 @@ class ProfilesController extends Controller
     // }
     public function index()
     {
-        $users = User::all();
-        return view('profiles.users', ['users' => $users]);
+        $users = User::orderBy('username', 'asc')
+        ->filter(request(['letter']))
+        ->paginate(10);
+
+        return view('profiles.users', compact('users'));
     }
 
     public function show($name)

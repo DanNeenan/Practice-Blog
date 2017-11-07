@@ -42,7 +42,7 @@ class PostsController extends Controller
             'body' => 'required'
         ]);
 
-        $spam->detect(request('body'));
+        $spam->detect(request('title'));
         //one way to save a form
         // Create a new post using the request data
         // $post = new Post;

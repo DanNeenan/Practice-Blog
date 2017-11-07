@@ -32,7 +32,7 @@
 
             @if (Auth::check())
             @if (Auth::user()->id === $profileUser->id)
-            <form enctype="multipart/form-data" action="/profiles/{{ $profileUser->username }}" method="POST">
+            <form enctype="multipart/form-data" action="/profiles/picture/{{ $profileUser->username }}" method="POST">
                 <label>Update Profile Picture</label>
                 <input type="file" name="avatar">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">

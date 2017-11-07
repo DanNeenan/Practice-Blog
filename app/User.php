@@ -74,6 +74,15 @@ class User extends Authenticatable
         // ]);
     }
 
+    public function scopeFilter($query, $filters)
+    {
+        if(!empty($filters)) {
+            if ($letter = $filters['letter']) {
+                $query->where('username', 'LIKE', $letter.'%');
+            }
+        }
+    }
+
     // public function roles()
     // {
     //     return $this->belongsToMany('Role')->withTimestamps();

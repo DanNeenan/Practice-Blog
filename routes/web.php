@@ -41,10 +41,11 @@ Route::delete('/profiles/settings/delete-account', 'ProfilesSettingsController@d
 
 
 Route::get('/profiles/{username}', 'ProfilesController@show');
-Route::post('/profiles/{username}', 'ProfilesController@update_avatar');
+Route::post('/profiles/picture/{username}', 'ProfilesController@update_avatar');
 Route::post('/profiles/{username}', 'ProfilesController@update_about');
 
 Route::get('/users', 'ProfilesController@index');
+Route::get('/users/{charFilter}', 'ProfilesController@charFilter');
 
 
 // Route::get('/', 'ProfilesController@getRoles');
