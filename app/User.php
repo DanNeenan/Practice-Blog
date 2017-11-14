@@ -39,7 +39,6 @@ class User extends Authenticatable
 
     public function subscribed()
     {
-        // Event::fire(new NewSubscriber('subscribe'));
         return $this->belongsToMany(User::class, 'user_subscriptions', 'subscriber_id', 'user_id');
     }
 
@@ -64,14 +63,6 @@ class User extends Authenticatable
                 $post->tags()->attach(Tag::firstOrCreate(['name' => trim($newTag)]));
             }
         }
-
-        // Event::fire(new PostCreated($post));
-
-        // Post::create([
-        //     'title' => request('title'),
-        //     'body'  => request('body'),
-        //     'user_id' => auth()->user()->id
-        // ]);
     }
 
     public function scopeFilter($query, $filters)
