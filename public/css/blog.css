@@ -84,6 +84,21 @@ a:focus {
   border-left: .3rem solid transparent;
 }
 
+img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.avatar_img {
+  width:150px;
+  height:150px;
+  float:left;
+  border-radius:50%;
+  margin-right:25px;
+}
+
+
+
 
 /*
  * Blog name and description
@@ -180,4 +195,9 @@ a:focus {
   z-index: 10;
   color: #B63F3B;
   background-color: #F98183;
+}
+
+
+ul.pagination li {
+  padding-right: 20px;
 }

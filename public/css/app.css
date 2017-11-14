@@ -55,7 +55,7 @@ h6,
   position: relative;
   padding: 1rem;
   font-weight: 500;
-  color: #F98183;
+  color: #cdddeb;
 }
 
 .nav-link:hover,
@@ -89,6 +89,7 @@ h6,
  */
 
 .blog-header {
+  background-color: #B63F3B;
   padding-bottom: 1.25rem;
   margin-bottom: 2rem;
   border-bottom: .05rem solid #eee;
@@ -133,14 +134,22 @@ h6,
   margin-bottom: 0;
 }
 
+.column-styling {
+  -webkit-column-count: 2;
+          column-count: 2;
+  -webkit-column-width: 50%;
+          column-width: 50%;
+  text-align: center;
+}
+
 /* Pagination */
 
 .blog-pagination {
-  margin-bottom: 4rem;
+  margin-bottom: 10rem;
 }
 
 .blog-pagination > .btn {
-  border-radius: 2rem;
+  border-radius: 10rem;
 }
 
 /*

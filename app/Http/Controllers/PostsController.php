@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Http\Request;
 use App\Post;
+use App\User;
 use App\Repositories\Posts;
 use App\Inspections\Spam;
 use Carbon\Carbon;
+use App\Events\PostCreatedBySubscribee;
 
 class PostsController extends Controller
 {
+
     public function __construct()
     {
         $this->middleware('auth')->except(['index', 'show']);
@@ -43,21 +46,16 @@ class PostsController extends Controller
         ]);
 
         $spam->detect(request('title'));
-        //one way to save a form
-        // Create a new post using the request data
-        // $post = new Post;
-
-        // $post->title = request('title');
-        // $post->body = request('body');
-        // save it to the database
-        // $post->save();
 
         $spam->detect(request('body'));
 
-        auth()->user()->publish(
+        $post = auth()->user()->publish(
             new Post(request(['title', 'body'])),
-            request('tag')
+            request('tag'),
+            request('post_image') ?? null
         );
+
+        \Event::fire(new PostCreatedBySubscribee($post));
 
         session()->flash('message', 'Your post has now been published.');
 

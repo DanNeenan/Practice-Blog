@@ -1,19 +1,27 @@
 <?php
 
 Route::get('/', 'PostsController@index')->name('home');
-Route::get('/posts/create', 'PostsController@create');
-Route::post('/posts', 'PostsController@store');
 
-Route::get('/posts/{post}', 'PostsController@show');
-Route::delete('/posts/{post}', 'PostsController@destroy');
+Route::prefix('posts')->group(function() {
+    Route::post('/', 'PostsController@store');
+    Route::get('/create', 'PostsController@create');
+    Route::get('/{post}', 'PostsController@show');
+    Route::delete('/{post}', 'PostsController@destroy');
 
-//works
+    Route::prefix('/{post}')->group(function() {
+        Route::post('/picture', 'PhotosController@store');
 
+        Route::prefix('/comments')->group(function() {
+            Route::post('/', 'CommentsController@store');
+            Route::get('/{comment}/favourites', 'FavouritesController@store');
+        });
+    });
 
-Route::get('/posts/tags/{tag}', 'TagsController@index');
-Route::post('/posts/tags', 'TagsController@store');
-
-Route::post('/posts/{post}/comments', 'CommentsController@store');
+    Route::prefix('/tags')->group(function() {
+        Route::get('/{tag}', 'TagsController@index');
+        Route::post('/', 'TagsController@store');
+    });
+});
 
 // Route::get('/register', 'AuthController@register');
 Route::get('/register', 'RegistrationController@create');
@@ -26,32 +34,35 @@ Route::post('/login', 'SessionsController@store');
 Route::get('/logout', 'SessionsController@destroy');
 
 
-Route::get('/profiles/settings', 'ProfilesSettingsController@show');
-Route::get('/profiles/settings/change-password', 'ProfilesSettingsController@showChangePassword');
-Route::post('/profiles/settings/change-password', 'ProfilesSettingsController@updatePassword');
+Route::prefix('profiles')->group(function() {
+    Route::get('/{username}', 'ProfilesController@show');
+    Route::post('/{username}', 'ProfilesController@update_about');
 
-Route::get('/profiles/settings/change-email', 'ProfilesSettingsController@showChangeEmail');
-Route::Post('/profiles/settings/change-email', 'ProfilesSettingsController@updateEmail');
+    Route::prefix('settings')->group(function() {
+        Route::get('/', 'ProfilesSettingsController@show');
+        Route::get('/change-password', 'ProfilesSettingsController@showChangePassword');
+        Route::post('/change-password', 'ProfilesSettingsController@updatePassword');
 
-Route::get('/profiles/settings/change-username', 'ProfilesSettingsController@showChangeUsername');
-Route::post('/profiles/settings/change-username', 'ProfilesSettingsController@updateUsername');
+        Route::get('/change-email', 'ProfilesSettingsController@showChangeEmail');
+        Route::Post('/change-email', 'ProfilesSettingsController@updateEmail');
 
-Route::get('/profiles/settings/delete-account', 'ProfilesSettingsController@showDeleteAccount');
-Route::delete('/profiles/settings/delete-account', 'ProfilesSettingsController@destroy');
+        Route::get('/change-username', 'ProfilesSettingsController@showChangeUsername');
+        Route::post('/change-username', 'ProfilesSettingsController@updateUsername');
 
+        Route::get('/delete-account', 'ProfilesSettingsController@showDeleteAccount');
+        Route::delete('/delete-account', 'ProfilesSettingsController@destroy');
+    });
 
-Route::get('/profiles/{username}', 'ProfilesController@show');
-Route::post('/profiles/picture/{username}', 'ProfilesController@update_avatar');
-Route::post('/profiles/{username}', 'ProfilesController@update_about');
+    Route::post('/picture/{username}', 'ProfilesController@update_avatar');
+
+    Route::post('/{username}/subscriptions', 'ProfilesSubscriptionController@store');
+});
 
 Route::get('/users', 'ProfilesController@index');
 Route::get('/users/{charFilter}', 'ProfilesController@charFilter');
 
 
 // Route::get('/', 'ProfilesController@getRoles');
-
-
-Route::post('/profiles/{username}/subscriptions', 'ProfilesSubscriptionController@store');
 
 //search bar functions?
 // Route::get('/', 'SearchController@search');

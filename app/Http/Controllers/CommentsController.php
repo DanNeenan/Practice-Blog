@@ -15,7 +15,7 @@ class CommentsController extends Controller
 
         $spam->detect(request('body'));
 
-        $post->addComment(request('body', 'user_id'));
+        $post->addComment(request('body'));
 
         return back();
     }

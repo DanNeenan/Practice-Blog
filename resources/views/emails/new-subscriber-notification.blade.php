@@ -6,9 +6,10 @@
 
 <body>
     <h1>
-        Welcome {{  }}!
+        Hello again {{ $user->name }}!
+
     </h1>
-    <p>The user {{  }} subscribed to your blog!</p>
+    <p>The user <a href='http://blog.dev/profiles/{{ auth()->user()->username }}'>{{ auth()->user()->username }}</a> subscribed to your blog!</p>
     <p>Post more and gain more subscribers!</p>
 
 </body>

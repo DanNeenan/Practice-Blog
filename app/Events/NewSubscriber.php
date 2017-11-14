@@ -16,12 +16,13 @@ class NewSubscriber
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $user;
+    public $subscribee;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct(User $user)
     {
         $this->user = $user;
     }

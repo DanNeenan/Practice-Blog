@@ -6,9 +6,18 @@
     @include('posts.post')
     @endforeach
 
-    @if (count($posts) > 9)
-    {{ $posts->links() }}
+    @if (request()->has('month') && request()->has('year'))
+        @php
+            $appends = ['month' => request('month'), 'year' => request('year')];
+        @endphp
+    @else
+        @php
+            $appends = [];
+        @endphp
     @endif
+
+    {{ $posts->appends($appends)->links() }}
+
 
 </div>
 

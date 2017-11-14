@@ -6,7 +6,7 @@
 
 <body>
     <h1>
-        Welcome to Automise Blog, {{ $user->name }}!
+        Welcome to Automise Blog, {{ $user->username }}!
     </h1>
 
 </body>

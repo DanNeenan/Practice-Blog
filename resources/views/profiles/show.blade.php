@@ -3,7 +3,7 @@
 @section('content')
 <div class="col-sm-8">
     <div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-3 avatar_img">
             <img src="/storage/avatars/{{ $profileUser->avatar }}" style="width:150px; height:150px; float:left; border-radius:50%; margin-right:25px;">
         </div>
         <div class="col-sm-9">
@@ -31,14 +31,14 @@
             <p>{{ $profileUser->name }} <small style="font-size:15px; color:grey;"> member since {{ $profileUser->created_at->diffForHumans() }}</small></p>
 
             @if (Auth::check())
-            @if (Auth::user()->id === $profileUser->id)
-            <form enctype="multipart/form-data" action="/profiles/picture/{{ $profileUser->username }}" method="POST">
-                <label>Update Profile Picture</label>
-                <input type="file" name="avatar">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input type="submit" class="pull-right btn btn-sm btn-secondary" style="float: right;">
-            </form>
-            @endif
+                @if (Auth::user()->id === $profileUser->id)
+                    <form enctype="multipart/form-data" action="/profiles/picture/{{ $profileUser->username }}" method="POST">
+                        <label>Update Profile Picture</label>
+                        <input type="file" name="avatar">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="submit" class="pull-right btn btn-sm btn-secondary" style="float: right;">
+                    </form>
+                @endif
             @endif
             <hr>
         </div>
@@ -54,14 +54,11 @@
         </h2>
         <p>{{ $profileUser->about }}</p>
         @if (Auth::check() && Auth::user()->id == $profileUser->id)
-            <form method="POST" action="/profiles/{username}">
+            <form method="POST" action="/profiles/{{ $profileUser->username }}">
                 {{ csrf_field() }}
-               {{--  <div>
-                        <button type="submit" class="btn btn-link" style="color:#999; float: right;">Delete Post?</button>
-                </div> --}}
 
                 <div class="form-group">
-                    <label for="about">About you:</label>
+                    <label for="about">Update About you:</label>
                     <textarea id="about" name="about" class="form-control" ></textarea>
                 </div>
 
@@ -70,8 +67,33 @@
                 </div>
                 @include ('layouts.errors')
             </form>
-
         @endif
+
+        <div class="row">
+            <div class="col-sm-6">
+                <h2>{{ $profileUser->username }}'s Subscribers</h2>
+                <div class="sidebar-module sidebar-module-inset column-styling">
+
+                    @foreach ($profileUser->subscribers as $subscription)
+                    <a href='/profiles/{{ $subscription->username }}'>
+                        {{ $subscription->username }}
+                    </a>
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <h2>{{ $profileUser->username }}'s Subscriptions</h2>
+                <div class="sidebar-module sidebar-module-inset column-styling">
+
+                    @foreach ($profileUser->subscribed as $subscription)
+                    <a href='/profiles/{{ $subscription->username }}'>
+                        {{ $subscription->username }}
+                    </a>
+                    @endforeach
+                </div>
+            </div>
+        </div>
     </div>
 
     <div>

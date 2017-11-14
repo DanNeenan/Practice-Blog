@@ -5,22 +5,16 @@ namespace App\Http\Controllers;
 use Auth;
 use Image;
 use App\User;
-// use App\Role;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
 class ProfilesController extends Controller
 {
-    // public function index()
-    // {
-    //     $user = User::where('username')->first();
-    //     return view('profiles.users');
-    // }
     public function index()
     {
         $users = User::orderBy('username', 'asc')
-        ->filter(request(['letter']))
-        ->paginate(10);
+            ->filter(request(['letter']))
+            ->paginate(10);
 
         return view('profiles.users', compact('users'));
     }
@@ -40,18 +34,30 @@ class ProfilesController extends Controller
         if ($request->hasFile('avatar')) {
             $avatar = $request->file('avatar');
             $filename = time() . '.' . $avatar->getClientOriginalExtension();
-            Image::make($avatar)
-            ->resize(300, 300)
-            ->save( public_path('/storage/avatars/' . $filename) );
+
+            $height = Image::make($avatar)->height();
+            $width = Image::make($avatar)->height();
+
+            if ($width > $height) {
+                $image = Image::make($avatar)
+                ->resize(null, 300, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+            }
+            if ($width <= $height) {
+                $image = Image::make($avatar)
+                ->resize(300, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+            }
+            $image->crop(300, 300)
+                ->save(public_path('/storage/avatars/' . $filename) );
 
             $user = Auth::user();
             $user->avatar = $filename;
             $user->save();
 
-            return view('profiles.show', [
-                'profileUser' => $user,
-                'posts' => $user->posts()->paginate(10)
-            ]);
+            return redirect()->back();
         }
     }
 
@@ -65,15 +71,5 @@ class ProfilesController extends Controller
         session()->flash('message', 'About Me has been changed.');
         return redirect()->back();
     }
-
-    // public function getRoles()
-    // {
-    //     $user = User::first()->roles()->attach();
-
-    //     $user->assignRole(1);
-
-    //     return $user->roles;
-    // }
-
 
 }

@@ -13,6 +13,8 @@ class ProfilesSubscriptionController extends Controller
     {
         if (request()->has('subscribe')) {
             auth()->user()->subscribed()->attach(request('user_id'));
+            $subscribee = User::findOrFail(request('user_id'));
+            Event::fire(new NewSubscriber($subscribee));
         }
         if (request()->has('unsubscribe')) {
             auth()->user()->subscribed()->detach(request('user_id'));

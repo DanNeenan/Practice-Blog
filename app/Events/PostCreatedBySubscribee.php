@@ -14,14 +14,16 @@ class PostCreatedBySubscribee
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $post;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($post)
     {
-        //
+        $this->post = $post;
     }
 
     /**

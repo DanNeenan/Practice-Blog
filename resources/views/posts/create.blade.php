@@ -5,7 +5,7 @@
     <h1>Publish a Post</h1>
     <hr>
 
-    <form method="POST" action="/posts">
+    <form method="POST" action="/posts" enctype="multipart/form-data">
         {{ csrf_field() }}
 
         <div class="form-group">
@@ -20,6 +20,12 @@
 
         <div class="form-group">
             <input type="text" class="form-control" id="tag" name="tag" placeholder="Add your tags here, seperated by a comma">
+        </div>
+
+        <div class="form-group">
+            <label>Upload Picture</label>
+            <input type="file" class="form-control" id="post_image" name="post_image">
+            <input type="hidden"  name="_token" value="{{ csrf_token() }}">
         </div>
 
         <div class="form-group">

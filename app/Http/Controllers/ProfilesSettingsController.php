@@ -111,11 +111,6 @@ class ProfilesSettingsController extends Controller
 
         $user = User::findOrFail($id);
         auth()->user()->subscribed()->detach(request('user_id'));
-        // auth()->user()->posts()->destroy();
-        // $posts = Post::findOrFail($user_id);
-        // $posts->comments()->delete();
-        // $posts->tags()->detach();
-        // $posts->delete();
         auth()->user()->delete();
 
         session()->flash('message', 'Your account has been deleted.');

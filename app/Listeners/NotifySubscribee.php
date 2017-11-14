@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\User;
 use App\Mail;
 use App\Events\NewSubscriber;
+use App\Mail\NewSubscriber as SubscriberMailable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -28,7 +29,6 @@ class NotifySubscribee
      */
     public function handle(NewSubscriber $event)
     {
-        $this->user = $event->user;
-        \Mail::to($event)->send(new NewSubscriber($event));
+        \Mail::to($event->user)->send(new SubscriberMailable($event->user));
     }
 }

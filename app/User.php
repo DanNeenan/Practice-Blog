@@ -3,6 +3,7 @@
 namespace App;
 
 use Event;
+use Image;
 // use App\Role;
 use App\Events\PostCreated;
 use Illuminate\Contracts\Auth\CanResetPassword;
@@ -31,6 +32,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function comments()
+    {
+        return $this->hasMany(Comments::class);
+    }
 
     public function subscribers()
     {
@@ -52,7 +57,7 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
-    public function publish(Post $post, $tag)
+    public function publish(Post $post, $tag, $image = null)
     {
         $tag = str_replace(' ', ',', $tag);
         $tags = explode(',', $tag);
@@ -63,6 +68,18 @@ class User extends Authenticatable
                 $post->tags()->attach(Tag::firstOrCreate(['name' => trim($newTag)]));
             }
         }
+
+        if ($image) {
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+
+            Image::make($image)
+                ->save( public_path('/storage/post_images/' . $filename) );
+
+            $post->posts_image = $filename;
+            $post->save();
+        }
+
+        return $post;
     }
 
     public function scopeFilter($query, $filters)

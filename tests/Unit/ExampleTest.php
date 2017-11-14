@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ExampleTest extends TestCase
 {
-    use DatabaseTransaction;
+    use RefreshDatabase;
     /**
      * A basic test example.
      *
