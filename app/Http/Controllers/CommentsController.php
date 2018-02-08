@@ -19,4 +19,12 @@ class CommentsController extends Controller
 
         return back();
     }
+
+    public function destroy(Post $post, Comment $comment)
+    {
+        if (auth()->user()->id == $comment->user_id || auth()->user()->id == $comment->post_creater_id) {
+            $comment->delete();
+        }
+        return back();
+    }
 }

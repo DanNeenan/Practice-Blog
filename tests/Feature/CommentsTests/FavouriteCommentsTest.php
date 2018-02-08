@@ -18,7 +18,7 @@ class FavouritesTest extends TestCase
      * @return void
      */
     /** @test */
-    public function an_authenticated_user_can_favourite_any_reply()
+    public function an_authenticated_user_can_toggle_favourite_any_reply()
     {
         $post = factory(Post::class)->create();
         $post->comments()->create(factory(Comment::class)->make()->toArray());
@@ -32,13 +32,4 @@ class FavouritesTest extends TestCase
         $this->actingAs($user)->get('/posts/' . $post->id . '/comments/' . $post->comments()->first()->id . '/favourites');
         $this->assertCount(0, $post->comments()->first()->favourites);
     }
-
-    public function an_authenticated_user_can_unfavourite_any_reply()
-    {
-        $this->actingAs($user);
-
-        $this->actingAs($user)->get('/posts/' . $post->id . '/comments/' . $post->comments()->first()->id . '/favourites');
-        $this->assertCount(0, $post->comments()->first()->favourites);
-    }
-
 }

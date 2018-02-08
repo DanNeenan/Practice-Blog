@@ -28,22 +28,23 @@ $factory->define(App\User::class, function (Faker $faker) {
 $factory->define(App\Tag::class, function (Faker $faker) {
     return [
         'name' => $faker->unique()->word,
-        'post_id' => function () {
-            return factory('App\Post')->create()->id;
-        },
+        // 'post_id' => function () {
+        //     return factory('App\Post')->create()->id;
+        // },
     ];
 });
 
+
 $factory->define(App\Post::class, function (Faker $faker) {
-    $date = now()->addWeeks(-rand(1, 23))->addSeconds(-rand(1, 2160000));
+    // $date = now()->addWeeks(-rand(1, 23))->addSeconds(-rand(1, 2160000));
     return [
         'user_id' => function () {
             return factory('App\User')->create()->id;
         },
         'title' => $faker->sentence,
         'body' => $faker->paragraph,
-        'created_at' => $date,
-        'updated_at' => $date
+        // 'created_at' => $date,
+        // 'updated_at' => $date
     ];
 });
 

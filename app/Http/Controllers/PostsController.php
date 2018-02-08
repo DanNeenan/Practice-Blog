@@ -65,12 +65,15 @@ class PostsController extends Controller
 
     public static function destroy($id)
     {
-        $posts = Post::findOrFail($id);
-        $posts->comments()->delete();
-        $posts->tags()->detach();
-        $posts->delete();
-
-        session()->flash('message', 'Your post has been deleted.');
-        return redirect('/');
+        $post = Post::findOrFail($id);
+        // $this->authorize('update', $post);
+        if (auth()->user()->id == $post->user_id) {
+            $post->comments()->delete();
+            $post->tags()->detach();
+            $post->delete();
+            session()->flash('message', 'Your post has been deleted.');
+            return redirect('/');
+        }
+        return back('');
     }
 }

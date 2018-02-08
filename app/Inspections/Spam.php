@@ -17,6 +17,4 @@ class Spam
 
         return false;
     }
-
-
 }

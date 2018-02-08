@@ -24,13 +24,13 @@
     </div>
     <div>
         @if (Auth::check())
-        @if (auth()->user()->username == $post->user->username)
-        <form method="POST" action="/posts/{{ $post->id }}">
-            {{ csrf_field() }}
-            {{ method_field('DELETE') }}
-            <button type="submit" class="btn btn-link" style="color:#999; float: right;">Delete Post?</button>
-        </form>
-        @endif
+            @if (auth()->user()->username == $post->user->username)
+                <form method="POST" action="/posts/{{ $post->id }}">
+                    {{ csrf_field() }}
+                    {{ method_field('DELETE') }}
+                    <button type="submit" class="btn btn-info">Delete Post?</button>
+                </form>
+            @endif
         @endif
     </div>
 
@@ -63,12 +63,29 @@
                             <h5> <strong>Guest</strong>
                         @endif
 
-                                {{ $comment->created_at->diffForHumans() }}: &nbsp;
+                        {{ $comment->created_at->diffForHumans() }}: &nbsp;
 
                         </h5>
-                            <a class="btn btn-default" {{ $comment->isFavourited() ? 'disabled' : '' }} href="/posts/{{ $post->id }}/comments/{{ $comment->id }}/favourites">
+                        @if (Auth::check())
+                            <a class="btn btn-info" href="/posts/{{ $post->id }}/comments/{{ $comment->id }}/favourites">
+                                @if ($comment->isFavourited())
+                                    <i class="fa fa-heart" aria-hidden="true"></i>
+                                @else
+                                    <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                @endif
                                 {{ $comment->favourites()->count() }} {{ str_plural('Favourite', $comment->favourites()->count()) }}
                             </a>
+                        @endif
+
+                        @if (Auth::check())
+                            @if (Auth::user()->id == $comment->user_id)
+                                <form method="POST" action="/posts/{{ $post->id }}/comments/{{ $comment->id }}/delete">
+                                    {{ csrf_field() }}
+                                    {{ method_field('DELETE') }}
+                                    <button type="submit" class="btn btn-info">Delete Comment</button>
+                                </form>
+                            @endif
+                        @endif
                         </div>
                         {{ $comment->body }}
                     </li>

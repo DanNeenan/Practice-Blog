@@ -4,7 +4,6 @@ namespace App;
 
 use Event;
 use Image;
-// use App\Role;
 use App\Events\PostCreated;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Notifications\Notifiable;
@@ -91,29 +90,29 @@ class User extends Authenticatable
         }
     }
 
-    // public function roles()
-    // {
-    //     return $this->belongsToMany('Role')->withTimestamps();
-    // }
+    public function roles()
+    {
+        return $this->belongsToMany('Role')->withTimestamps();
+    }
 
-    // public function hasRole($name)
-    // {
-    //     foreach ($this->roles as $role)
-    //     {
-    //         if ($role->name == $name) return true;
-    //     }
-    //     return false;
-    // }
+    public function hasRole($name)
+    {
+        foreach ($this->roles as $role)
+        {
+            if ($role->name == $name) return true;
+        }
+        return false;
+    }
 
-    // public function assignRole($role)
-    // {
-    //     return $this->roles()->attach($role);
-    // }
+    public function assignRole($role)
+    {
+        return $this->roles()->attach($role);
+    }
 
-    // public function removeRole($role)
-    // {
-    //     return $this->roles()->detach($role);
-    // }
+    public function removeRole($role)
+    {
+        return $this->roles()->detach($role);
+    }
 
     public function getRouteKeyName()
     {

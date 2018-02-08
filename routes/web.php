@@ -1,25 +1,30 @@
 <?php
 
 Route::get('/', 'PostsController@index')->name('home');
+Route::get('/home', 'PostsController@index');
+
+Route::get('/admin', 'AdminController@index');
 
 Route::prefix('posts')->group(function() {
     Route::post('/', 'PostsController@store');
     Route::get('/create', 'PostsController@create');
-    Route::get('/{post}', 'PostsController@show');
-    Route::delete('/{post}', 'PostsController@destroy');
+
 
     Route::prefix('/{post}')->group(function() {
+        Route::get('/', 'PostsController@show');
+        Route::delete('/', 'PostsController@destroy');
         Route::post('/picture', 'PhotosController@store');
 
         Route::prefix('/comments')->group(function() {
             Route::post('/', 'CommentsController@store');
+            Route::delete('/{comment}/delete', 'CommentsController@destroy');
             Route::get('/{comment}/favourites', 'FavouritesController@store');
         });
     });
 
     Route::prefix('/tags')->group(function() {
-        Route::get('/{tag}', 'TagsController@index');
         Route::post('/', 'TagsController@store');
+        Route::get('/{tag}', 'TagsController@index');
     });
 });
 
@@ -38,6 +43,10 @@ Route::prefix('profiles')->group(function() {
     Route::get('/{username}', 'ProfilesController@show');
     Route::post('/{username}', 'ProfilesController@update_about');
 
+    Route::post('/picture/{username}', 'ProfilesController@update_avatar');
+
+    Route::post('/{username}/subscriptions', 'ProfilesSubscriptionController@store');
+
     Route::prefix('settings')->group(function() {
         Route::get('/', 'ProfilesSettingsController@show');
         Route::get('/change-password', 'ProfilesSettingsController@showChangePassword');
@@ -52,10 +61,6 @@ Route::prefix('profiles')->group(function() {
         Route::get('/delete-account', 'ProfilesSettingsController@showDeleteAccount');
         Route::delete('/delete-account', 'ProfilesSettingsController@destroy');
     });
-
-    Route::post('/picture/{username}', 'ProfilesController@update_avatar');
-
-    Route::post('/{username}/subscriptions', 'ProfilesSubscriptionController@store');
 });
 
 Route::get('/users', 'ProfilesController@index');

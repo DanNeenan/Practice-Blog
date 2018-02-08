@@ -13,7 +13,7 @@ class Comment extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::Class);
+        return $this->belongsTo(User::class);
     }
 
     public function favourites()
@@ -24,11 +24,12 @@ class Comment extends Model
     public function toggleFavourite()
     {
         $attributes = ['user_id' => auth()->user()->id];
-        if(! $this->favourites()->create($attributes)->exists()) {
-            $this->favourites()->create($attributes);
-        } elseif($this->favourites()->create($attributes)->exists()) {
-            $this->favourites()->delete();
+
+        if($this->isFavourited()) {
+             return $this->favourites()->delete($attributes);
         }
+
+        return $this->favourites()->create($attributes);
     }
 
     public function isFavourited()

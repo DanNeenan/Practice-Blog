@@ -25,10 +25,17 @@ class Post extends Model
 
     public function addComment($body)
     {
-        $this->comments()->create([
+        if (!auth()->check()) {
+            return $this->comments()->create([
+                'body' => $body,
+            ]);
+        }
+
+        return $this->comments()->create([
             'body' => $body,
             'user_id' => auth()->user()->id
         ]);
+
 
         // Comment::create([
         //     'body' => $body,

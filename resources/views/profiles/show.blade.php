@@ -12,19 +12,19 @@
                 {{ $profileUser->username }}
             </h1>
             @if (Auth::check())
-            @if (Auth::user()->id != $profileUser->id)
-            <form method="POST" action="/profiles/{{ $profileUser->username }}/subscriptions">
-                {!! csrf_field() !!}
-                <input type="hidden" name="user_id" value="{{ $profileUser->id }}" />
+                @if (Auth::user()->id != $profileUser->id)
+                <form method="POST" action="/profiles/{{ $profileUser->username }}/subscriptions">
+                    {!! csrf_field() !!}
+                    <input type="hidden" name="user_id" value="{{ $profileUser->id }}" />
 
-                @if (Auth::user()->isSubscribed($profileUser))
-                <input type="submit" class="btn btn-secondary" value="Subscribed" name="unsubscribe" />
-                @else
-                <input type="submit" class="btn btn-primary" value="Subscribe" name="subscribe" />
+                    @if (Auth::user()->isSubscribed($profileUser))
+                        <input type="submit" class="btn btn-secondary" value="Subscribed" name="unsubscribe" />
+                    @else
+                        <input type="submit" class="btn btn-primary" value="Subscribe" name="subscribe" />
+                    @endif
+
+                </form>
                 @endif
-
-            </form>
-            @endif
             @endif
 
 

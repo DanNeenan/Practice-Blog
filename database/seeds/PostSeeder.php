@@ -13,6 +13,7 @@ class PostSeeder extends Seeder
      */
     public function run()
     {
+        factory(Tag::class, 10)->create();
         factory(Post::class, 10)->create()->each(function ($post) {
             $post->tags()->attach(rand(1, Tag::orderBy('id', 'desc')->first()->id));
         });
